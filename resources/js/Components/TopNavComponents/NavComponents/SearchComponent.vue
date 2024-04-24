@@ -1,0 +1,16 @@
+<script setup>
+import { MagnifyingGlassIcon } from '@heroicons/vue/24/solid';
+import {emitter} from '@/EventBus';
+import { inject } from 'vue';
+
+const searchValue = inject('searchValue')
+
+</script>
+
+
+<template>
+    <div class="border border-custom-blue-light px-2  rounded-md flex gap-2">
+        <MagnifyingGlassIcon class="w-[1.2rem] text-custom-gray-text"/>
+    <input type="text" v-model="searchValue" @keyup.enter="emitter.emit('makeSearch')" class="border-none p-0 placeholder:text-custom-gray-icons-light focus:border-none focus:outline-0 focus:ring-0 bg-none" placeholder="Search">
+    </div>
+</template>
