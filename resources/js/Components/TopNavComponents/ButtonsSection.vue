@@ -3,6 +3,7 @@ import NewFileButton from '@/Components/TopNavComponents/Buttons/NewFileButton.v
 import NewFolderButton from '@/Components/TopNavComponents/Buttons/NewFolderButton.vue'
 import UploadFileButton from '@/Components/TopNavComponents/Buttons/UploadFileButton.vue'
 import CopyButton from '@/Components/TopNavComponents/Buttons/CopyButton.vue'
+import CutButton from '@/Components/TopNavComponents/Buttons/CutButton.vue'
 import PasteButton from '@/Components/TopNavComponents/Buttons/PasteButton.vue'
 import RenameButton from '@/Components/TopNavComponents/Buttons/RenameButton.vue'
 import DownloadButton from '@/Components/TopNavComponents/Buttons/DownloadButton.vue'
@@ -22,6 +23,7 @@ import UnzipButton from '@/Components/TopNavComponents/Buttons/UnzipButton.vue'
         <div class="h-9 w-0.5 bg-custom-gray-borders"></div>
         <div class="flex align-center gap-4">
             <CopyButton />
+            <CutButton />
             <PasteButton />
             <RenameButton />
             <DownloadButton />

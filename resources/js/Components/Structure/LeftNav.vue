@@ -10,9 +10,9 @@ const props = defineProps({
 
 
 <template>
-    <div class="basis-1/5 p-2 border-solid border-r border-custom-blue-light overflow-x-auto">
+    <div class="basis-1/5 p-2 border-solid border-r border-custom-blue-light">
     <SelectDisk/>
-    <ul class="">
+    <ul class="overflow-auto pb-4">
         <NavFolder v-for="dir in directories" :key="dir.basename" :dir="dir"/>
     </ul>
 </div>

@@ -19,7 +19,7 @@ defineEmits(['openParentFolder'])
         <td class="flex gap-3 px-[0.625rem] py-2 text-custom-black-text"><FileIcon :extension="file.extension" :cardView="cardView"/>{{ file.basename }}</td>
         <td class="px-[0.625rem] py-2 text-custom-gray-text"  v-show="showPath"><span @click="$emit('openParentFolder')">{{file.dirname}}</span></td>
         <td class="px-[0.625rem] py-2 text-custom-gray-text">{{getFileDate(file.timestamp)}}</td>
-        <td class="px-[0.625rem] py-2 text-custom-gray-text">{{ file.extension }}</td>
+        <td class="px-[0.625rem] py-2 text-custom-gray-text">{{ getFileType(file.extension) }}</td>
         <td class="pr-4 py-2 text-custom-gray-text text-end">{{ getFileSize(file.size)}}</td>
     </tr>
     <div v-else class="flex flex-col p-4 cursor-pointer hover:bg-custom-gray-bg rounded-2xl select-none transition-colors" :class="selected?' bg-custom-gray-bg':''">

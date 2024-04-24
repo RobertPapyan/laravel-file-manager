@@ -25,6 +25,7 @@ export default {
                 'custom-gray-borders' : '#C3CED7',
                 'custom-gray-text' : '#606E80',
                 'custom-black-text' : '#181D25',
+                'custom-red-main' :'#F32051'
             }
         },
     },

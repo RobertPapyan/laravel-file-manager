@@ -5,7 +5,6 @@ import {faFileZipper} from '@fortawesome/free-regular-svg-icons'
 
 import { inject } from 'vue';
 import { watch } from 'vue';
-let active = false;
 const selectedItems = inject('selectedItems')
 
 function includesZip (items){
@@ -19,7 +18,7 @@ function includesZip (items){
 
 <template>
 
-    <button v-if="includesZip(selectedItems)" @click="emitter.emit('unzipFiles')" class="flex gap-2 cursor-pointer items-center text-custom-black-text hover:text-custom-gray-text transition-colors">
+    <button v-if="includesZip(selectedItems)" @click.stop="emitter.emit('unzipFiles')" class="flex gap-2 cursor-pointer items-center text-custom-black-text hover:text-custom-gray-text transition-colors">
         <FontAwesomeIcon :icon="faFileZipper"  class="text-[1.125rem] text-custom-gray-text"/>
         <span class="text-sm">Unzip</span>
     </button>

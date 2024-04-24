@@ -67,7 +67,7 @@ function submitForm(){
         class="fixed border border-custom-gray-light md:w-[32.5rem] top-14 left-[50%] bg-white rounded-xl translate-x-[-50%] shadow-[0_8px_24px_0px_#0000001A]">
         <div class="flex justify-between py-4 px-6 border-b">
             <span class="text-lg font-medium">Upload files</span>
-            <XMarkIcon @click="showZipFilesModal = false"
+            <XMarkIcon @click.stop="showZipFilesModal = false"
                 class="w-6 text-custom-gray-icons cursor-pointer hover:text-custom-gray-text transition-colors" />
         </div>
 
@@ -96,11 +96,11 @@ function submitForm(){
 
 
         <div class="flex justify-end gap-2  border-t py-4 px-6">
-            <button @click="showZipFilesModal = false"
+            <button @click.stop="showZipFilesModal = false"
                 class="py-2 px-3 border-custom-gray-borders border rounded-xl font-medium cursor-pointer hover:border-custom-gray-text transition-colors">
                 Cancel
             </button>
-            <button @click="submitForm"
+            <button @click.stop="submitForm"
                 class="py-2 px-3 border rounded-xl font-medium text-white bg-custom-blue-main cursor-pointer hover:bg-custom-blue-dark transition-colors">
                 Submit
             </button>

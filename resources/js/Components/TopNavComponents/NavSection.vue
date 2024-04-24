@@ -59,7 +59,7 @@ emitter.on('changeDisk',()=>{
         </div>
         <div class="self-stretch flex gap-2">
             <SearchComponent />
-            <TopNavButton :type="'changeView'" @click="emitter.emit('changeView')"/>
+            <TopNavButton :type="'changeView'" @click.stop="emitter.emit('changeView')"/>
         </div>
    </div>
 </template>

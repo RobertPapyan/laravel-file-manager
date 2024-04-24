@@ -163,6 +163,22 @@ function eventsHandler(event,data){
             selectedItems.value = []
             break;
         }
+        case 'cutFiles':{
+            if (!selectedItems.value.length) {
+                showError('No files selected')
+                return
+            }
+            clipBoard.directories = []
+            clipBoard.files = []
+            selectedItems.value.map((item) => {
+                item.type === 'dir' ? clipBoard.directories.push(item.path) : clipBoard.files.push(item.path)
+            })
+            clipBoard.disk = disk.value;
+            clipBoard.type = 'cut'
+            showSuccess(`${selectedItems.value.length} items copied to clipboard`)
+            selectedItems.value = []
+            break;
+        }
         case 'pasteFiles':{
 
             if(!clipBoard.directories.length && !clipBoard.files.length){
@@ -249,7 +265,7 @@ function eventsHandler(event,data){
     }
 }
 
-
+document.addEventListener('click',()=>{selectedItems.value = []})
 
 
 

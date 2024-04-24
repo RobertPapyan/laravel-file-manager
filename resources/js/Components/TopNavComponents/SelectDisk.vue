@@ -44,23 +44,4 @@ const selectedDisk = ref('public')
         </div>
 
     </Listbox>
-
-
-
-    <!-- <div class="flex items-center">
-        <div class=" min-w-36 border border-custom-gray-borders px-2 py-[0.1rem] rounded-lg">
-            <div class="flex items-center justify-between">
-            <span class="flex gap-2 text-sm">
-                <InboxIcon class="w-[1.275rem] text-custom-gray-icons" />{{ disk }}
-            </span>
-            <ChevronDownIcon @click="showDiskList = !showDiskList" class="w-[1rem] cursor-pointer" />
-            </div>
-            <ul v-show="showDiskList" class="">
-                <li v-for="(disk,diskName) in diskList">
-                    {{ diskName }}
-                </li>
-            </ul>
-        </div>
-
-    </div> -->
 </template>

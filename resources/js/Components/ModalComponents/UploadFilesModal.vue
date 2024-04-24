@@ -57,7 +57,7 @@ function addFiles(event){
     <div v-show="showUploadFilesModal" class="fixed border border-custom-gray-light md:w-[32.5rem] top-14 left-[50%] bg-white rounded-xl translate-x-[-50%] shadow-[0_8px_24px_0px_#0000001A]">
         <div class="flex justify-between py-4 px-6 border-b">
             <span class="text-lg font-medium">Upload files</span>
-            <XMarkIcon @click="showUploadFilesModal = false" class="w-6 text-custom-gray-icons cursor-pointer hover:text-custom-gray-text transition-colors"/>
+            <XMarkIcon @click.stop="showUploadFilesModal = false" class="w-6 text-custom-gray-icons cursor-pointer hover:text-custom-gray-text transition-colors"/>
         </div>
 
 
@@ -84,12 +84,12 @@ function addFiles(event){
             </div>
             <div class="flex gap-2">
             <button
-                @click="showUploadFilesModal = false"
+                @click.stop="showUploadFilesModal = false"
                 class="py-2 px-3 border-custom-gray-borders border rounded-xl font-medium cursor-pointer hover:border-custom-gray-text transition-colors">
                 Cancel
             </button>
             <button
-                @click="submitForm"
+                @click.stop="submitForm"
                 class="py-2 px-3 border rounded-xl font-medium text-white bg-custom-blue-main cursor-pointer hover:bg-custom-blue-dark transition-colors">
                 Submit
             </button>
