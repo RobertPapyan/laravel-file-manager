@@ -8,7 +8,6 @@ import { emitter } from '@/EventBus';
 
 const diskList  = inject('diskList')
 const disk = inject('disk')
-const showDiskList = ref(false)
 const selectedDisk = ref('public')
 </script>
 
@@ -24,14 +23,14 @@ const selectedDisk = ref('public')
                         <InboxIcon class="w-[1.275rem] text-custom-gray-icons" />{{ disk }}
                     </span>
                     <ListboxButton>
-                        <ChevronDownIcon @click="showDiskList = !showDiskList" class="w-[1rem] cursor-pointer" />
+                        <ChevronDownIcon  class="w-[1rem] cursor-pointer" />
                     </ListboxButton>
                 </div>
 
                 <ListboxOptions class="relative mb-1 mt-1 bg-white px-2">
 
                     <ListboxOption v-for="(d, diskName) in diskList" :key="diskName" :value="diskName"
-                    @click="emitter.emit('changeDisk',diskName);showDiskList = false"
+                    @click="emitter.emit('changeDisk',diskName)"
                     class="text-sm flex gap-2  rounded-md py-1 cursor-pointer"
                     :class="diskName === disk? 'hidden cursor-default text-custom-gray-icons-light':'hover:bg-custom-gray-bg'">
 

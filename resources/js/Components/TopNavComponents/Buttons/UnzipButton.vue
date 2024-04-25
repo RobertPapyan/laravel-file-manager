@@ -22,7 +22,7 @@ function includesZip (items){
         <FontAwesomeIcon :icon="faFileZipper"  class="text-[1.125rem] text-custom-gray-text"/>
         <span class="text-sm">Unzip</span>
     </button>
-    <button v-else="includesZip(selectedItems)" class="flex gap-2 cursor-default items-center text-custom-black-text hover:text-custom-gray-text transition-colors">
+    <button v-else class="flex gap-2 cursor-default items-center text-custom-black-text hover:text-custom-gray-text transition-colors">
         <FontAwesomeIcon :icon="faFileZipper"  class="text-[1.125rem] text-custom-gray-icons-light"/>
         <span class="text-sm text-custom-gray-icons-light">Unzip</span>
     </button>

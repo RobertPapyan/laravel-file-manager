@@ -74,7 +74,6 @@ function submitForm(){
         <div class="mx-5 my-6 flex flex-col justify-center items-center gap-4">
 
             <FontAwesomeIcon :icon="faFileZipper" class="text-[3rem] text-custom-gray-text" />
-            {{ items }}
             <div class="mx-5 my-6 w-full">
                 <label for="fileName" class="block mb-2 text-base">Archive name</label>
                 <input v-model="archiveName" type="text" name="fileName" placeholder="Type here" id=""

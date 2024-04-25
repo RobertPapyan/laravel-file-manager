@@ -16,6 +16,7 @@ import ZipFilesModal from '@/Components/ModalComponents/ZipFilesModal.vue'
 import SuccessModal from '@/Components/ModalComponents/SuccessModal.vue'
 import ErrorModal from '@/Components/ModalComponents/ErrorModal.vue'
 import axios from 'laravel-file-manager/src/http/axios';
+import { watch } from 'vue';
 
 
 const content = ref(Object);
@@ -54,7 +55,9 @@ onMounted(()=>{
 })
 })
 
-
+watch(selectedItems,(newValue)=>{
+    console.log(newValue)
+})
 emitter.on('*', (type, e) => eventsHandler(type,e))
 function eventsHandler(event,data){
     switch (event){
@@ -262,10 +265,12 @@ function eventsHandler(event,data){
         })
             break;
         }
+        case 'resetSelection':{
+            selectedItems.value = []
+        }
     }
 }
 
-document.addEventListener('click',()=>{selectedItems.value = []})
 
 
 
