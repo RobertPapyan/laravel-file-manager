@@ -9,6 +9,7 @@ import { FolderIcon } from '@heroicons/vue/24/solid';
 import InputErrorMessage from '@/Components/ModalComponents/InputErrorMessage.vue'
 import { ref } from 'vue';
 import { watch } from 'vue';
+import { onUpdated } from 'vue';
 
 const props = defineProps({
     items:Array
@@ -19,6 +20,7 @@ const disk = inject('disk');
 const currentFolder = inject('currentFolder');
 const emit = defineEmits(['filesDeleted'])
 const archiveName = ref('')
+const input = ref(null);
 const errorMesage = ref('');
 const showError = ref(false);
 
@@ -59,7 +61,9 @@ function submitForm(){
 
 }
 
-
+onUpdated(()=>{
+    input.value.focus()
+})
 </script>
 
 <template>
@@ -76,7 +80,7 @@ function submitForm(){
             <FontAwesomeIcon :icon="faFileZipper" class="text-[3rem] text-custom-gray-text" />
             <div class="mx-5 my-6 w-full">
                 <label for="fileName" class="block mb-2 text-base">Archive name</label>
-                <input v-model="archiveName" type="text" name="fileName" placeholder="Type here" id=""
+                <input v-model="archiveName" ref="input" type="text" name="fileName" placeholder="Type here" id=""
                     class="w-full border border-custom-blue-light rounded-xl py-2 px-3 focus:border-custom-blue-light focus:ring-0 placeholder:text-custom-gray-light"
                     :class="showError?'border-red-600 focus:border-red-600':''"
             >

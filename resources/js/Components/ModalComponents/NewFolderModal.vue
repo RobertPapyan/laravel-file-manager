@@ -5,11 +5,13 @@ import { watch } from 'vue';
 import { inject } from 'vue';
 import InputErrorMessage from '@/Components/ModalComponents/InputErrorMessage.vue'
 import axios from 'laravel-file-manager/src/http/axios';
+import { onUpdated } from 'vue';
 const props = defineProps({
     folders:Array
 })
 const showNewFolderModal = defineModel();
 const folderName = ref('');
+const input = ref(null);
 const errorMesage = ref('');
 const showError = ref(false);
 const disk = inject('disk');
@@ -55,7 +57,9 @@ function submitForm(){
     })
 
 }
-
+onUpdated(()=>{
+    input.value.focus()
+})
 </script>
 
 <template>
@@ -66,7 +70,7 @@ function submitForm(){
         </div>
         <div class="mx-5 my-6">
             <label for="folderName" class="block mb-2 text-base">Folder name</label>
-            <input v-model="folderName" type="text" name="folderName" placeholder="Type here" id=""
+            <input v-model="folderName" ref="input" type="text" name="folderName" placeholder="Type here" id=""
             class="w-full border border-custom-blue-light rounded-xl py-2 px-3 focus:border-custom-blue-light focus:ring-0 placeholder:text-custom-gray-light"
             :class="showError?'border-red-600 focus:border-red-600':''"
             >

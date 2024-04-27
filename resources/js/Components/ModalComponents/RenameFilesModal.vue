@@ -6,6 +6,7 @@ import { inject } from 'vue';
 import InputErrorMessage from '@/Components/ModalComponents/InputErrorMessage.vue'
 import axios from 'laravel-file-manager/src/http/axios';
 import { onMounted } from 'vue';
+import { onUpdated } from 'vue';
 const props = defineProps({
     item:Object,
     files:Array,
@@ -13,6 +14,7 @@ const props = defineProps({
 })
 const showRenameFilesModal = defineModel();
 const fileName = ref('');
+const input = ref(null);
 const errorMesage = ref('');
 const showError = ref(false);
 const disk = inject('disk');
@@ -29,7 +31,8 @@ watch(showRenameFilesModal, (newValue)=>{
         let arr = props.item.path.split('/');
         oldName = arr[arr.length-1].split('.')[0]
      }
-    fileName.value = oldName
+    fileName.value = oldName;
+    input.value.focus()
    }
 
 })
@@ -74,6 +77,9 @@ function submitForm(){
     })
 
 }
+onUpdated(()=>{
+    input.value.focus()
+})
 
 </script>
 
@@ -85,7 +91,7 @@ function submitForm(){
         </div>
         <div class="mx-5 my-6">
             <label for="fileName" class="block mb-2 text-base">New name</label>
-            <input v-model="fileName" type="text" name="fileName" placeholder="Type here" id=""
+            <input v-model="fileName" ref="input" type="text" name="fileName" placeholder="Type here" id=""
             class="w-full border border-custom-blue-light rounded-xl py-2 px-3 focus:border-custom-blue-light focus:ring-0 placeholder:text-custom-gray-light"
             :class="showError?'border-red-600 focus:border-red-600':''"
             >
