@@ -88,11 +88,11 @@ function endDrag(event){
         if(cross){
 
             selectedItems.value.push({type:'file',path:props.files[index].path})
-            console.log(selectedItems.value)
         }
     })
-
+    if(dragStartPosition.value.x > dragEndPosition.value.x){
     dragStarted = false;
+    }
 }
 
 function rectanglesCross(rec1, rec2){
@@ -141,6 +141,10 @@ function isSelected(path,type){
     return false
 }
 function resetSelection(){
+    if(dragStarted){
+        dragStarted = false;
+        return;
+    }
     selectedItems.value.splice(0, selectedItems.value.length)
 }
 window.addEventListener('mouseup', (e)=>{endDrag(e)}, false);
@@ -173,7 +177,7 @@ window.addEventListener('mouseup', (e)=>{endDrag(e)}, false);
             @open-parent-folder="emitter.emit('openFolder',{path:folder.dirname})"
             />
         </table>
-        <div v-else class="grid grid-cols-4 gap-4 p-2">
+        <div v-else class="grid grid-cols-5 gap-5 p-2">
             <TableFolder v-for="(folder,index) in folders" :key="folder.path" v-model="foldersRefs[index]"
             :folder="folder" :selected="isSelected(folder.path,'dir')" :showPath="showItemsPath" :cardView ="cardsView"
             @click.shift="selectMultiple(folder.path,'dir')"
@@ -190,6 +194,5 @@ window.addEventListener('mouseup', (e)=>{endDrag(e)}, false);
             @open-parent-folder="emitter.emit('openFolder',{path:folder.dirname})"
             />
         </div>
-        {{ selectedItems }}
     </div>
 </template>

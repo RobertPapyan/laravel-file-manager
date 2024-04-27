@@ -33,7 +33,7 @@ function submitForm(){
 </script>
 
 <template>
-    <div v-show="showDeleteFilesModal" class="fixed border border-custom-gray-light md:w-[32.5rem] top-14 left-[50%] bg-white rounded-xl translate-x-[-50%] shadow-[0_8px_24px_0px_#0000001A]">
+    <div v-show="showDeleteFilesModal" @keyup.enter="submitForm" class="fixed border border-custom-gray-light md:w-[32.5rem] top-14 left-[50%] bg-white rounded-xl translate-x-[-50%] shadow-[0_8px_24px_0px_#0000001A]">
         <div class="flex justify-between py-4 px-6 border-b">
             <span class="text-lg font-medium">Upload files</span>
             <XMarkIcon @click="showDeleteFilesModal = false" class="w-6 text-custom-gray-icons cursor-pointer hover:text-custom-gray-text transition-colors"/>

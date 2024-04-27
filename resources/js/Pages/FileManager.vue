@@ -54,10 +54,6 @@ onMounted(()=>{
     getTree(disk.value).then(res=>tree.value = res)
 })
 })
-
-watch(selectedItems,(newValue)=>{
-    console.log(newValue)
-})
 emitter.on('*', (type, e) => eventsHandler(type,e))
 function eventsHandler(event,data){
     switch (event){
