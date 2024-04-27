@@ -269,8 +269,6 @@ function eventsHandler(event,data){
 
 
 
-
-
 function refreshContent(){
     getContent(disk.value,currentFolder.value).then(res=>content.value = res);
 }

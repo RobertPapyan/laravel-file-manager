@@ -8,6 +8,7 @@ import SelectBox from '@/Components/ModalComponents/SelectBox.vue'
 import { emitter } from '@/EventBus';
 import { watch } from 'vue';
 import { ref } from 'vue';
+import { onUpdated } from 'vue';
 const props = defineProps({
     files:Array,
     folders:Array,
@@ -25,7 +26,6 @@ const foldersRefs = ref([])
 const filesRefs = ref([])
 document.body.addEventListener('click', ()=>{showContextMenu.value = false}, true);
 emitter.on('changeView',()=>{cardsView.value = !cardsView.value})
-
 let shiftClick = false;
 let dragStarted = false;
 
@@ -68,10 +68,12 @@ function drag(event){
 }
 function endDrag(event){
 
-    if(!dragStarted) return
+    if(!dragStarted) return;
     showDragBox.value = false;
     selectedItems.value.splice(0, selectedItems.value.length)
+
     foldersRefs.value.map((f,index)=>{
+        if(f === null)return;
         const filePosition = f.getBoundingClientRect();
         const cross = rectanglesCross(
         {c1:dragStartPosition.value,c2:dragEndPosition.value},
@@ -81,6 +83,7 @@ function endDrag(event){
         }
     })
     filesRefs.value.map((f,index)=>{
+        if(f === null)return;
         const filePosition = f.getBoundingClientRect();
         const cross = rectanglesCross(
         {c1:dragStartPosition.value,c2:dragEndPosition.value},
@@ -90,9 +93,9 @@ function endDrag(event){
             selectedItems.value.push({type:'file',path:props.files[index].path})
         }
     })
-    if(dragStartPosition.value.x > dragEndPosition.value.x){
+
     dragStarted = false;
-    }
+
 }
 
 function rectanglesCross(rec1, rec2){
@@ -140,6 +143,7 @@ function isSelected(path,type){
     }
     return false
 }
+/*
 function resetSelection(){
     if(dragStarted){
         dragStarted = false;
@@ -147,6 +151,7 @@ function resetSelection(){
     }
     selectedItems.value.splice(0, selectedItems.value.length)
 }
+*/
 window.addEventListener('mouseup', (e)=>{endDrag(e)}, false);
 </script>
 
@@ -154,12 +159,12 @@ window.addEventListener('mouseup', (e)=>{endDrag(e)}, false);
 <template>
     <ContextMenu :posX="posX" :posY="posY" v-model="showContextMenu"/>
     <SelectBox :startPos="dragStartPosition" :endPos="dragEndPosition" v-if="showDragBox"/>
-    <div class="flex-grow h-full overflow-y-auto select-none" @click="resetSelection"
+    <div class="flex-grow h-full overflow-y-auto pb-4 select-none" @click="resetSelection"
     @mousedown.self="startDrag"
     @mousemove="drag"
     >
        <!-- <Disks :disks="disks"/>-->
-        <table class="w-full" v-if="!cardsView">
+        <table class="w-full" v-if="!cardsView" >
             <TableHead  :showPath="showItemsPath"/>
             <TableFolder v-for="(folder,index) in folders" :key="folder.path" v-model="foldersRefs[index]"
             :folder="folder" :selected="isSelected(folder.path,'dir')" :showPath="showItemsPath" :cardView ="cardsView"
@@ -177,7 +182,7 @@ window.addEventListener('mouseup', (e)=>{endDrag(e)}, false);
             @open-parent-folder="emitter.emit('openFolder',{path:folder.dirname})"
             />
         </table>
-        <div v-else class="grid grid-cols-5 gap-5 p-2">
+        <div v-else class="grid grid-cols-5 gap-5 p-2" @mousedown.self="startDrag">
             <TableFolder v-for="(folder,index) in folders" :key="folder.path" v-model="foldersRefs[index]"
             :folder="folder" :selected="isSelected(folder.path,'dir')" :showPath="showItemsPath" :cardView ="cardsView"
             @click.shift="selectMultiple(folder.path,'dir')"

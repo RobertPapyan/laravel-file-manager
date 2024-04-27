@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -39,6 +40,4 @@ Route::get('/file-manager',function(){
     return Inertia::render('FileManager');
 });
 */
-
-
 require __DIR__.'/auth.php';

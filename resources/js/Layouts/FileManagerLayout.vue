@@ -14,10 +14,10 @@ const props = defineProps({
 </script>
 
 <template>
-    <section class="max-w-7xl xl:mx-auto mx-2 h-full py-5">
-        <div class="border  border-custom-gray-borders h-full overflow-hidden">
+    <section class="max-w-7xl xl:mx-auto mx-2 h-dvh py-5">
+        <div class="border  border-custom-gray-borders h-full overflow-hidden ">
             <NavbarTop />
-            <div class="flex h-full">
+            <div class="flex h-[90%]">
                 <LeftNav :directories="directories" />
                 <slot />
             </div>

@@ -45,14 +45,14 @@ function submitForm(){
             </div>
             <span class="text-custom-black-text text-lg font-bold">Remove {{items.length}} {{items.length == 1? 'item': 'items'}}? </span>
             <ul  class="my-4 flex flex-col gap-2">
-                <li v-for="item in items" class="flex justify-between">
-
+                <li v-for="item in items.slice(0,10)" class="flex justify-between">
                      <span class="flex gap-2">
                         <FileIcon v-if="item.type ==='file'" :extension="item.path.split('/').pop().split('.').pop()"/>
                         <FolderIcon v-if="item.type === 'dir'" class="w-[1.375rem] text-custom-gray-icons-light"/>
                         {{item.path.split('/').pop() }}
                     </span>
                 </li>
+                <li v-if="items.length > 10">...</li>
             </ul>
         </div>
 
