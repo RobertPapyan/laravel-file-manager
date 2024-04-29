@@ -76,7 +76,8 @@ class FileManagerController extends Controller
         return response()->json(
             $this->fm->content(
                 $request->input('disk'),
-                $request->input('path')
+                $request->input('path'),
+                $request->input('chunk')??0
             )
         );
     }
@@ -121,7 +122,11 @@ class FileManagerController extends Controller
     {
 
         return response()->json(
-            $this->fm->search($request->input('disk'),$request->input('search'))
+            $this->fm->search(
+                $request->input('disk'),
+                $request->input('search'),
+                $request->input('chunk')??0
+                )
         );
     }
     /**

@@ -1,5 +1,5 @@
-export function getContent(disk = 'public',path = ''){
-    return  fetch(route('fm.content')+`?disk=${disk}`+`&path=${path}`, {
+export function getContent(disk = 'public',path = '',chunk = 0){
+    return  fetch(route('fm.content')+`?disk=${disk}`+`&path=${path}`+`&chunk=${chunk}`, {
          headers:{
              'Content-Type': 'application/json',
              'Accept' : 'application/json',
@@ -28,4 +28,13 @@ export function getContent(disk = 'public',path = ''){
             'Accept' : 'application/json',
         },
     }).then(response => response.json())
+}
+
+export function getSearch(search,disk = 'public',chunk = 0){
+   return  fetch(route('fm.search')+`?search=${search}&disk=${disk}&chunk=${chunk}`,{
+        headers:{
+            'Content-Type': 'application/json',
+            'Accept' : 'application/json',
+        },
+       }).then(response => response.json())
 }

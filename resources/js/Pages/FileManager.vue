@@ -4,7 +4,7 @@ import { onMounted } from 'vue';
 import { ref } from 'vue';
 import FileManagerLayout from '@/Layouts/FileManagerLayout.vue'
 import Content from '@/Components/Structure/Content.vue'
-import {getContent,getTree,getInit} from '@/Helper/getHelpers'
+import {getContent,getTree,getInit,getSearch} from '@/Helper/getHelpers'
 import { provide } from 'vue';
 import {emitter} from '@/EventBus'
 import NewFileModal from '@/Components/ModalComponents/NewFileModal.vue'
@@ -25,6 +25,7 @@ const init = ref(Object);
 const disk = ref('');
 const diskList = ref(Array);
 const currentFolder = ref('');
+const currentChunk = ref(0);
 const showNewFileModal = ref(false);
 const showNewFolderModal = ref(false);
 const showUploadFilesModal = ref(false);
@@ -44,13 +45,13 @@ const clipBoard = {
     disk:'',
     type:''
 }
-
+let loadSearch = false;
 
 const showArray = [showNewFileModal,showNewFolderModal,showUploadFilesModal,showRenameFilesModal,showDeleteFilesModal,showZipFilesModal]
 
 onMounted(()=>{
     getInit().then((res)=>{init.value = res; disk.value = Object.keys(res.config.disks)[0];diskList.value = res.config.disks }).then(()=>{
-    getContent(disk.value).then(res=>content.value = res)
+    getContent(disk.value).then((res)=>{content.value = res; currentChunk.value = content.value.chunk})
     getTree(disk.value).then(res=>tree.value = res)
 })
 })
@@ -65,10 +66,12 @@ function eventsHandler(event,data){
              break;
             }
         case 'openFolder' :{
-            getContent(disk.value, data.path).then(res=>content.value = res)
+            emitter.emit('scrollContentToTop')
+            getContent(disk.value, data.path,0).then((res)=>{content.value = res; currentChunk.value = res.chunk})
             currentFolder.value = data.path;
             selectedItems.value = [];
             showItemsPath.value = false;
+            loadSearch = false;
             break;
         }
         case 'openNewFolderModal':{
@@ -217,6 +220,7 @@ function eventsHandler(event,data){
             break;
         }
         case 'changeDisk':{
+            emitter.emit('scrollContentToTop')
             axios.get(route('fm.select-disk')+`?disk=${data}`).then((res)=>{
                 if (res.data.result.status === 'success') {
                     showSuccess('Disk changed successfully');
@@ -224,6 +228,7 @@ function eventsHandler(event,data){
                     currentFolder.value = '';
                     selectedItems.value = [];
                     showItemsPath.value = false;
+                    loadSearch = false;
                     refreshContent();
                     refreshTree();
                 } else {
@@ -233,31 +238,32 @@ function eventsHandler(event,data){
             })
         }
         case 'goHome':{
+            emitter.emit('scrollContentToTop')
             currentFolder.value = '';
             selectedItems.value = [];
             showItemsPath.value = false;
+            loadSearch = false;
             refreshContent();
             break;
         }
         case 'refreshFolder':{
+            emitter.emit('scrollContentToTop')
             refreshContent();
             selectedItems.value = [];
             showItemsPath.value = false;
+            loadSearch = false;
             break;
         }
         case 'makeSearch':{
+            emitter.emit('scrollContentToTop')
             if(!searchValue.value){emitter.emit('refreshFolder');return;}
-            fetch(route('fm.search')+`?search=${searchValue.value}&disk=${disk.value}`,{
-         headers:{
-             'Content-Type': 'application/json',
-             'Accept' : 'application/json',
-         },
-        })
-        .then(response => response.json())
+
+        getSearch(searchValue.value,disk.value,0)
         .then((res)=>{
             content.value = res;
             showItemsPath.value = true;
-
+            loadSearch = true;
+            currentChunk.value = res.chunk;
         })
             break;
         }
@@ -270,7 +276,28 @@ function eventsHandler(event,data){
 
 
 function refreshContent(){
-    getContent(disk.value,currentFolder.value).then(res=>content.value = res);
+    getContent(disk.value,currentFolder.value,0).then((res)=>{content.value = res; currentChunk.value = content.value.chunk});
+}
+function getMoreContent(){
+    if(currentChunk.value === -1) return;
+    if(!loadSearch){
+        getContent(disk.value,currentFolder.value,++currentChunk.value).then((res)=>{
+            content.value.directories = content.value.directories.concat(res.directories);
+            content.value.files = content.value.files.concat(res.files);
+            content.value.chunk = res.chunk;
+            currentChunk.value = res.chunk;
+        })
+    }else{
+        getSearch(searchValue.value,disk.value,++currentChunk.value)
+        .then((res)=>{
+            content.value.directories = content.value.directories.concat(res.directories);
+            content.value.files = content.value.files.concat(res.files);
+            showItemsPath.value = true;
+            loadSearch = true;
+            content.value.chunk = res.chunk;
+            currentChunk.value = res.chunk;
+        })
+    }
 }
 function refreshTree(){
     getTree(disk.value).then(res=>tree.value = res)
@@ -300,9 +327,10 @@ provide('searchValue',searchValue)
 
 
 <template>
-
     <FileManagerLayout :directories="tree.directories" :disk="disk" :selectedItems="selectedItems">
-        <Content :files="content.files" :folders="content.directories" :disks="init.config?.disks?? {}" v-model="selectedItems" v-model:showItemsPath = "showItemsPath"/>
+        <Content :files="content.files" :folders="content.directories" :disks="init.config?.disks?? {}"
+        v-model="selectedItems" v-model:showItemsPath = "showItemsPath" @load-more="getMoreContent"
+        />
     </FileManagerLayout>
 
     <NewFileModal v-model="showNewFileModal" :files="content.files" @file-created="refreshContent();showSuccess('File created successfully')"/>

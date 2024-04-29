@@ -6,7 +6,7 @@ use Alexusmai\LaravelFileManager\Events\Deleted;
 use Alexusmai\LaravelFileManager\Services\ConfigService\ConfigRepository;
 use Alexusmai\LaravelFileManager\Services\TransferService\TransferFactory;
 use Alexusmai\LaravelFileManager\Traits\CheckTrait;
-use Alexusmai\LaravelFileManager\Traits\ContentTrait;
+use App\Traits\ContentTrait;
 use Alexusmai\LaravelFileManager\Traits\PathTrait;
 use App\Traits\SearchTrait;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -93,9 +93,9 @@ class FileManager
      * @return array
      * @throws FilesystemException
      */
-    public function content($disk, $path): array
+    public function content($disk, $path,$chunk = 0): array
     {
-        $content = $this->getContent($disk, $path);
+        $content = $this->getContent($disk, $path,$chunk);
 
         return [
             'result'      => [
@@ -104,6 +104,7 @@ class FileManager
             ],
             'directories' => $content['directories'],
             'files'       => $content['files'],
+            'chunk'       => $content['chunk']
         ];
     }
 
@@ -116,9 +117,9 @@ class FileManager
      * @return array
      * @throws FilesystemException
      */
-    public function search($disk, $search): array
+    public function search($disk, $search,$chunk): array
     {
-        $content = $this->getSearchContent($disk, $search);
+        $content = $this->getSearchContent($disk, $search,$chunk);
 
         return [
             'result'      => [
@@ -127,6 +128,7 @@ class FileManager
             ],
             'directories' => $content['directories'],
             'files'       => $content['files'],
+            'chunk'       => $content['chunk']
         ];
     }
 

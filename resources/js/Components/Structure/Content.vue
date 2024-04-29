@@ -1,14 +1,11 @@
 <script setup>
-import { onMounted } from 'vue';
 import TableFolder from '@/Components/TableComponents/TableFolder.vue'
 import TableFile from '@/Components/TableComponents/TableFile.vue'
 import TableHead from '@/Components/TableComponents/TableHead.vue'
 import ContextMenu from '@/Components/ModalComponents/ContextMenu.vue'
 import SelectBox from '@/Components/ModalComponents/SelectBox.vue'
 import { emitter } from '@/EventBus';
-import { watch } from 'vue';
 import { ref } from 'vue';
-import { onUpdated } from 'vue';
 const props = defineProps({
     files:Array,
     folders:Array,
@@ -19,13 +16,19 @@ const cardsView = ref(false);
 const showContextMenu = ref(false);
 const posX = ref(0);
 const posY = ref(0);
-const dragStartPosition = ref({x:0,y:0})
-const dragEndPosition = ref({x:0,y:0})
+const dragStartPosition = ref({x:0,y:0});
+const dragEndPosition = ref({x:0,y:0});
 const showDragBox = ref(false);
-const foldersRefs = ref([])
-const filesRefs = ref([])
+const foldersRefs = ref([]);
+const filesRefs = ref([]);
+const contentDiv = ref(null);
+const emit = defineEmits(['loadMore']);
+
 document.body.addEventListener('click', ()=>{showContextMenu.value = false}, true);
-emitter.on('changeView',()=>{cardsView.value = !cardsView.value})
+emitter.on('changeView',()=>{cardsView.value = !cardsView.value;})
+emitter.on('scrollContentToTop',()=>{
+    contentDiv.value.scrollTop = 0;
+})
 let shiftClick = false;
 let dragStarted = false;
 
@@ -152,6 +155,12 @@ function resetSelection(){
     selectedItems.value.splice(0, selectedItems.value.length)
 }
 */
+function handleScroll(event){
+
+    if(event.target.scrollHeight - event.target.clientHeight === event.currentTarget.scrollTop){
+        emit('loadMore')
+    }
+}
 window.addEventListener('mouseup', (e)=>{endDrag(e)}, false);
 </script>
 
@@ -159,9 +168,11 @@ window.addEventListener('mouseup', (e)=>{endDrag(e)}, false);
 <template>
     <ContextMenu :posX="posX" :posY="posY" v-model="showContextMenu"/>
     <SelectBox :startPos="dragStartPosition" :endPos="dragEndPosition" v-if="showDragBox"/>
-    <div class="flex-grow h-full overflow-y-auto pb-4 select-none" @click="resetSelection"
+    <div class="flex-grow h-full overflow-y-auto pb-4 select-none" ref="contentDiv"
+    @click="resetSelection"
     @mousedown.self="startDrag"
     @mousemove="drag"
+    @scroll="handleScroll"
     >
        <!-- <Disks :disks="disks"/>-->
         <table class="w-full" v-if="!cardsView" >
@@ -182,7 +193,7 @@ window.addEventListener('mouseup', (e)=>{endDrag(e)}, false);
             @open-parent-folder="emitter.emit('openFolder',{path:folder.dirname})"
             />
         </table>
-        <div v-else class="grid grid-cols-5 gap-5 p-2" @mousedown.self="startDrag">
+        <div v-else class="grid grid-cols-5 gap-5 gap-y-10 p-2" @mousedown.self="startDrag">
             <TableFolder v-for="(folder,index) in folders" :key="folder.path" v-model="foldersRefs[index]"
             :folder="folder" :selected="isSelected(folder.path,'dir')" :showPath="showItemsPath" :cardView ="cardsView"
             @click.shift="selectMultiple(folder.path,'dir')"

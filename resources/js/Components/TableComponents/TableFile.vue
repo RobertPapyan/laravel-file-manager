@@ -25,9 +25,9 @@ defineEmits(['openParentFolder'])
     </tr>
     <div v-else ref="model" class="flex flex-col p-4 cursor-pointer hover:bg-custom-gray-bg rounded-2xl select-none transition-colors" :class="selected?' bg-custom-gray-bg':''">
         <FileIcon :extension="file.extension" :cardView="cardView"/>
-        <span class="font-normal text-custom-gray-text">File Name: {{ file.basename }}</span>
-        <span class="font-normal text-custom-gray-text">{{ getFileType(file.extension) }} : {{file.extension}}</span>
-        <span class="font-normal text-custom-gray-text">{{getFileDate(file.timestamp)}}</span>
+        <span class="font-normal text-custom-gray-text text-center">{{ file.basename }}</span>
+        <!--<span class="font-normal text-custom-gray-text text-center">{{ getFileType(file.extension) }} : {{file.extension}}</span>-->
+        <span class="font-normal text-custom-gray-text text-sm">{{getFileDate(file.timestamp)}}</span>
     </div>
 
 </template>

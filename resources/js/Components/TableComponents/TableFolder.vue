@@ -23,9 +23,8 @@ const model = defineModel();
     </tr>
     <div v-else ref="model" class="flex flex-col p-4 cursor-pointer hover:bg-custom-gray-bg rounded-2xl select-none transition-colors" :class="selected?' bg-custom-gray-bg':''">
         <FolderIcon class="w-12 text-custom-blue-main self-center mb-4"/>
-        <span class="font-normal text-custom-gray-text">Folder Name: {{ folder.basename }}</span>
-        <span class="font-normal text-custom-gray-text">Folder</span>
-        <span class="font-normal text-custom-gray-text">{{getFileDate(folder.timestamp)}}</span>
+        <span class="font-normal text-custom-gray-text text-center">{{ folder.basename }}</span>
+        <span class="font-normal text-custom-gray-text text-sm text-center">{{getFileDate(folder.timestamp)}}</span>
     </div>
 
 

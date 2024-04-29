@@ -8,7 +8,7 @@ trait SearchTrait
 {
 
 
-    public function getSearchContent($disk,$search){
+    public function getSearchContent($disk,$search,$chunk){
         $allFiles = Storage::allFiles($disk);
         $allDirectories = Storage::allDirectories($disk);
         $files = [];
@@ -44,7 +44,7 @@ trait SearchTrait
         }
 
 
-        return ["files" => $files,  "directories"=>$directories ];
+        return $this->chunkContent($directories,$files,$chunk,25);
     }
 
     public function cutDisk($path,$disk){
@@ -54,4 +54,5 @@ trait SearchTrait
         }
         return $newPath;
     }
+
 }
